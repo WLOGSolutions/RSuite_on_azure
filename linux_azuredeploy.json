@@ -65,7 +65,7 @@
         "virtualNetworkName": "[parameters('vmName')]",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-        "fileUris": "fileUris here",
+        "fileUris": "https://raw.githubusercontent.com/WLOGSolutions/RSuite_on_azure/master/linux_installRsuite.sh",
         "commandToExecute": "bash linux_installRsuite.sh"
     },
     "resources": [
