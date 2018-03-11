@@ -17,13 +17,17 @@ if ($proc.ExitCode -ne 0) {
 	Write-Host "Could not install RSuite. Process exited with status code $($proc.ExitCode)"
 } else{
 	Write-Host "RSuite installed successfully."
-	$env:Path = $env:Path + ";C:\Program Files\R\RSuiteCLI\"
-	$previous_env = $env:Path
-	$r_home =  $env:R_HOME -replace '/', '\' 
-	$env:Path = $env:Path + ";" + $r_home + "\bin\"
+	$path = $env:Path
+
+    $rsuite_cli_path = "C:\Program Files\R\RSuiteCLI\"
+    $r_home = $env:R_HOME -replace '/', '\'
+    # remove Git path as it provides tools which colide with R tools
+    $clean_path = ($path.Split(';') | Where-Object { $_ -ne "C:\Program Files\Git\usr\bin" }) -join ';' 
+
+    $env:Path = $rsuite_cli_path + ";" + $clean_path + ";" + $r_home + "\bin"
 
 	Write-Host "Installing R package for RSuite."
-	cmd.exe /c "rsuite install -v"
+	cmd.exe /c "rsuite install -v --rstudio-deps"
 
 	Write-Host "Check if everything is installed properly. Version: "
 	cmd.exe /c "rsuite version"
